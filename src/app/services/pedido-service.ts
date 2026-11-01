@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { pizzaPedido } from './pizzaPedido';
 import { pizza } from '../card-pizza/pizza';
 
@@ -6,40 +6,57 @@ import { pizza } from '../card-pizza/pizza';
   providedIn: 'root'
 })
 export class PedidoService {
- pedido : pizzaPedido[] = [];
+ pedido = signal<pizzaPedido[]>([]);
 
- anadirPizza(pizza: pizza) {
-  const pizzaEncontrada = this.pedido.find(
-    elemento => elemento.pizza.id === pizza.id
-  );
+anadirPizza(pizza: pizza) {
+  this.pedido.update(pedidoActual => {
+    const pizzaEncontrada = pedidoActual.find(
+      elemento => elemento.pizza.id === pizza.id
+    );
 
-  if (pizzaEncontrada) {
-    pizzaEncontrada.cantidad++;
-  } else {
-    this.pedido.push({
-      pizza: pizza,
-      cantidad: 1
-    });
-  }
-}
-
-quitarPizza(pizza: pizza){
-     const pizzaEncontrada = this.pedido.find(
-    elemento => elemento.pizza.id === pizza.id
-  );
-  if (pizzaEncontrada){
-    if(pizzaEncontrada.cantidad > 1){
-        pizzaEncontrada.cantidad--;
-    } else{
-       const indice = this.pedido.indexOf(pizzaEncontrada);
-       this.pedido.splice(indice, 1);
+    if (pizzaEncontrada) {
+      return pedidoActual.map(elemento =>
+        elemento.pizza.id === pizza.id
+          ? { ...elemento, cantidad: elemento.cantidad + 1 }
+          : elemento
+      );
+    } else {
+      return [...pedidoActual, {
+        pizza: pizza,
+        cantidad: 1
+      }];
     }
-  }
+  });
 }
-obtenerCantidad(pizza:pizza){
-  const pizzaEncontrada = this.pedido.find(
+
+quitarPizza(pizza: pizza) {
+  this.pedido.update(pedidoActual => {
+    const pizzaEncontrada = pedidoActual.find(
+      elemento => elemento.pizza.id === pizza.id
+    );
+
+    if (!pizzaEncontrada) {
+      return pedidoActual;
+    }
+
+    if (pizzaEncontrada.cantidad > 1) {
+      return pedidoActual.map(elemento =>
+        elemento.pizza.id === pizza.id
+          ? { ...elemento, cantidad: elemento.cantidad - 1 }
+          : elemento
+      );
+    }
+
+    return pedidoActual.filter(
+      elemento => elemento.pizza.id !== pizza.id
+    );
+  });
+}
+obtenerCantidad(pizza: pizza) {
+  const pizzaEncontrada = this.pedido().find(
     elemento => elemento.pizza.id === pizza.id
   );
+
   return pizzaEncontrada ? pizzaEncontrada.cantidad : 0;
 }
 }
