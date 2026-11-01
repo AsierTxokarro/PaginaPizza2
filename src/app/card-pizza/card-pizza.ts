@@ -9,4 +9,5 @@ import { pizza } from './pizza';
 })
 export class CardPizza {
   pizza = input.required<pizza>();
+
 }
