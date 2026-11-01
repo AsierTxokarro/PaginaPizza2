@@ -31,11 +31,27 @@
 <form>
   <div class="mb-3">
     <label for="horaEntrega" class="form-label">Hora de Entrega</label>
-    <input type="time" class="form-control" id="horaEntrega" required>
+    <input 
+    type="time" 
+    class="form-control" 
+    id="horaEntrega"
+    name="horaEntrega" 
+    required
+    [ngModel]="horaEntrega()"
+    (ngModelChange)="horaEntrega.set($event)"
+    >
   </div>
   <div class="mb-3">
     <label for="direccion" class="form-label">Dirección</label>
-    <input type="text" class="form-control" id="direccion" required>
+    <input 
+    type="text" 
+    class="form-control" 
+    id="direccion" 
+    name="direccion"
+    required
+    [ngModel]="direccion()"
+    (ngModelChange)="direccion.set($event)"
+    >
   </div>
  <div class="mb-3">
   <label class="form-label">Método de pago</label>
@@ -115,8 +131,8 @@
   
 </div>
   <div class="card-footer p-3 d-flex gap-2">
-    <button type="submit" class="btn btn-light">Pagar</button>
-     <button type="reset" class="btn btn-light">Limpiar</button>
+    <button type="submit" class="btn btn-light" (click)="pagar()">Pagar</button>
+     <button type="reset" class="btn btn-light"(click)="borrar()">Limpiar</button>
   </div>
   
 </form>
