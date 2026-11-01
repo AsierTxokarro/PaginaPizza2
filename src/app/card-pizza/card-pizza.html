@@ -9,4 +9,11 @@
         }
     </ul>
   </div>
+  <div class="card-footer">
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn btn-danger" (click)="quitar()">−</button>
+    <button class="btn btn-success" (click)="anadir()">+</button>
+    <span class="badge text-bg-light">Cantidad: {{ cantidad() }}</span>
+  </div>
+</div>
 </div>
