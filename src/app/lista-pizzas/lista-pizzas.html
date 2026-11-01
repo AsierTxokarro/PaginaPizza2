@@ -1,5 +1,10 @@
-@for (pizza of listaPizzas; track pizza.id) {
 
-  <app-card-pizza [pizza]="pizza"></app-card-pizza>
+<app-navbar (listaFiltrada) = filtrarPizzas($event)></app-navbar>
+<app-header></app-header>
+<div class="row row-cols-1 row-cols-md-4 g-4 p-4">
+@for (pizza of pizzasFiltradas; track pizza.id) {
+
+<app-card-pizza [pizza]="pizza"></app-card-pizza>
 
 }
+</div>
