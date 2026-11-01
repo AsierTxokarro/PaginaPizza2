@@ -1,6 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { pizza } from './pizza';
 import { PedidoService } from '../services/pedido-service';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [],
@@ -11,6 +12,7 @@ import { PedidoService } from '../services/pedido-service';
 export class CardPizza {
   pizza = input.required<pizza>();
   private pedidoService = inject(PedidoService);
+  private router = inject(Router)
 
   anadir(){
     this.pedidoService.anadirPizza(this.pizza());
@@ -20,5 +22,8 @@ export class CardPizza {
   }
   cantidad(){
      return this.pedidoService.obtenerCantidad(this.pizza());
+  }
+  pedir(){
+     this.router.navigate(['/formulario-pedido.html']);
   }
 }
