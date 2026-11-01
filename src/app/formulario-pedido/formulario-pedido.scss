@@ -13,7 +13,13 @@
    
 }
 .container{
-    padding-top: 60px;
     width: 600px;
-    background-color: rgb(164, 163, 163);
+    background-color: rgb(245, 245, 245);
+}
+.container h4{
+    color: rgb(255, 128, 0);
+}
+.card-footer{
+    background-color: rgb(255, 128, 0);
+    height: 80px;
 }

@@ -17,31 +17,108 @@
   </div>
 </nav>
 
-<div class="container container-cantidad">
+<div class="container container-cantidad pt-3 pb-3 mb-3 mt-3">
+    <h4>Tu pedido: </h4>
     @for (pedido of pedidoService.pedido(); track pedido.pizza.id) {
-  <div>
-    {{ pedido.pizza.name }}
+    <div class="alert alert-primary" role="alert">
+        {{ pedido.pizza.name }}
     Cantidad seleccionada: {{ pedido.cantidad }}
-  </div>
-}
+    </div>
+    }
 </div>
 
-<div class="container container-pedido">
+<div class="container container-pedido pt-3 pb-3">
 <form>
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Hora de Entrega</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    <label for="horaEntrega" class="form-label">Hora de Entrega</label>
+    <input type="time" class="form-control" id="horaEntrega" required>
   </div>
   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="direccion" class="form-label">Dirección</label>
+    <input type="text" class="form-control" id="direccion" required>
   </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+ <div class="mb-3">
+  <label class="form-label">Método de pago</label>
+
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="metodoPago"
+      id="tarjeta"
+      value="tarjeta"
+      [ngModel]="metodoPago()"
+      (ngModelChange)="metodoPago.set($event)"
+    >
+    <label class="form-check-label" for="tarjeta">
+      Tarjeta
+    </label>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="metodoPago"
+      id="bizum"
+      value="bizum"
+      [ngModel]="metodoPago()"
+      (ngModelChange)="metodoPago.set($event)"
+    >
+    <label class="form-check-label" for="bizum">
+      Bizum
+    </label>
+  </div>
+ @if (metodoPago() === 'tarjeta') {
+  <div class="mb-3">
+    <label class="form-label" for="numeroTarjeta">
+      Número de tarjeta
+    </label>
+    <input
+      type="text"
+      class="form-control"
+      id="numeroTarjeta"
+      name="numeroTarjeta"
+      placeholder="Introduce los 16 dígitos"
+      [ngModel]="numeroTarjeta()"
+      (ngModelChange)="numeroTarjeta.set($event)"
+    >
+    @if (numeroTarjeta().length > 0 && !validarTarjeta()){
+        <div class="text-danger">
+            Debes introducir un número de tarjeta valido
+        </div>
+    }
+  </div>
+}
+
+@if (metodoPago() === 'bizum') {
+  <div class="mb-3">
+    <label class="form-label" for="telefono">
+      Número de teléfono
+    </label>
+    <input
+      type="tel"
+      class="form-control"
+      id="telefono"
+      name="telefono"
+      placeholder="Introduce los 9 dígitos"
+      [ngModel]="bizum()"
+      (ngModelChange)="bizum.set($event)"
+    >
+    @if (bizum().length > 0 && !validarBizum()){
+        <div class="text-danger">
+            Debes introducir un número de tarjeta valido
+        </div>
+    }
+  </div>
+}
+  
+</div>
+  <div class="card-footer p-3 d-flex gap-2">
+    <button type="submit" class="btn btn-light">Pagar</button>
+     <button type="reset" class="btn btn-light">Limpiar</button>
+  </div>
+  
 </form>
 </div>
 
